@@ -6,5 +6,26 @@
     "source.fixAll": true
   },
   "headwind.runOnSave": false,
-  "typescript.preferences.importModuleSpecifier": "non-relative"
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#5aeac2",
+    "activityBar.activeBorder": "#c055e9",
+    "activityBar.background": "#5aeac2",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#c055e9",
+    "activityBarBadge.foreground": "#15202b",
+    "sash.hoverBorder": "#5aeac2",
+    "statusBar.background": "#2de4b1",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#19c595",
+    "statusBarItem.remoteBackground": "#2de4b1",
+    "statusBarItem.remoteForeground": "#15202b",
+    "titleBar.activeBackground": "#2de4b1",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#2de4b199",
+    "titleBar.inactiveForeground": "#15202b99"
+  },
+  "peacock.color": "#2de4b1",
+  "cSpell.words": ["commitlint"]
 }
