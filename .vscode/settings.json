@@ -27,5 +27,5 @@
     "titleBar.inactiveForeground": "#15202b99"
   },
   "peacock.color": "#2de4b1",
-  "cSpell.words": ["commitlint"]
+  "cSpell.words": ["commitlint", "vercel"]
 }
