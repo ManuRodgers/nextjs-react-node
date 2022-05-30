@@ -1,16 +1,38 @@
-import { AppProps } from 'next/app';
+import NiceModal from '@ebay/nice-modal-react';
+import App, { AppInitialProps } from 'next/app';
 
 import '@/styles/globals.css';
-// !STARTERCONF This is for demo purposes, remove @/styles/colors.css import immediately
-import '@/styles/colors.css';
+import 'antd/dist/antd.css';
+import 'react-phone-number-input/style.css';
 
-/**
- * !STARTERCONF info
- * ? `Layout` component is called in every page using `np` snippets. If you have consistent layout across all page, you can add it here too
- */
+import Layout from '@/components/Layout';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+import { wrapper } from '@/store';
+
+class MyApp extends App<AppInitialProps> {
+  public static getInitialProps = wrapper.getInitialAppProps(
+    () => async (context) => {
+      // store.dispatch(getUsersAsync());
+      // store.dispatch(getPostsAsync());
+      return {
+        pageProps: {
+          // https://nextjs.org/docs/advanced-features/custom-app#caveats
+          ...(await App.getInitialProps(context)).pageProps,
+          // Some custom thing for all pages
+        },
+      };
+    }
+  );
+  public render() {
+    const { Component, pageProps } = this.props;
+    return (
+      <NiceModal.Provider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </NiceModal.Provider>
+    );
+  }
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

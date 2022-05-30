@@ -27,5 +27,13 @@
     "titleBar.inactiveForeground": "#15202b99"
   },
   "peacock.color": "#2de4b1",
-  "cSpell.words": ["commitlint", "reduxjs", "vercel"]
+  "cSpell.words": [
+    "antd",
+    "commitlint",
+    "hookform",
+    "mockjs",
+    "navs",
+    "vercel",
+    "zustand"
+  ]
 }
