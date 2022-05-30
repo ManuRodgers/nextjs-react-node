@@ -33,6 +33,7 @@
     "hookform",
     "mockjs",
     "navs",
+    "upsert",
     "vercel",
     "zustand"
   ]

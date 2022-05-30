@@ -11,12 +11,10 @@ export type User = {
 
 export type UserState = {
   users: User[];
-  currentUser: User | null;
 };
 
 const initialState: UserState = {
   users: [],
-  currentUser: null,
 };
 
 const userSlice = createSlice({
@@ -40,8 +38,10 @@ export const getUsersAsync = createAsyncThunk(
 );
 
 // selectors
-export const selectUser = (state: AppState) => state.user.currentUser;
+export const selectUserById = (state: AppState, userId: string) =>
+  state.user.users.find((user) => user.id.toString() === userId.toString());
 export const selectUsers = (state: AppState) => state.user.users;
+
 // reducer
 const userReducer = userSlice.reducer;
 export default userReducer;

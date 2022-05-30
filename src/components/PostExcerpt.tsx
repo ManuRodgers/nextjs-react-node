@@ -1,3 +1,4 @@
+import { EntityId } from '@reduxjs/toolkit';
 import Link from 'next/link';
 import React, { FC, memo } from 'react';
 
@@ -5,11 +6,16 @@ import PostAuthor from '@/components/PostAuthor';
 import ReactionButtons from '@/components/ReactionButtons';
 import TimeAgo from '@/components/TimeAgo';
 
-import { Post } from '@/store/features/post/post.slice';
+import { selectPostById } from '@/store/features/post/post.slice';
+import { useAppSelector } from '@/store/hooks';
 
-type PostExcerptProps = { post: Post };
+type PostExcerptProps = { postId: EntityId };
 
-const PostExcerpt: FC<PostExcerptProps> = ({ post }): JSX.Element => {
+const PostExcerpt: FC<PostExcerptProps> = ({ postId }): JSX.Element => {
+  const post = useAppSelector((state) => selectPostById(state, postId));
+  if (!post) {
+    return <></>;
+  }
   return (
     <article>
       <h3>{post.title}</h3>

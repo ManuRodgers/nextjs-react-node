@@ -11,6 +11,7 @@ const navs = [
   { label: 'Home', path: '/' },
   { label: 'Tab', path: '/tab' },
   { label: 'Post', path: '/post' },
+  { label: 'User', path: '/user' },
 ];
 
 const Header: FC = (): JSX.Element => {
