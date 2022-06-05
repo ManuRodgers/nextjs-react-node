@@ -1,49 +1,50 @@
-import { useRouter } from 'next/router';
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 
-import { addPostAsync, Status } from '@/store/features/post/post.slice';
+import { useAddNewPostMutation } from '@/store/features/post/post.api';
 import { selectUsers } from '@/store/features/user/user.slice';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppSelector } from '@/store/hooks';
 
 const AddPostForm: FC = (): JSX.Element => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
+  const [addNewPost, { isLoading, error }] = useAddNewPostMutation();
   const users = useAppSelector(selectUsers);
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
-  const [addPostAsyncStatus, setAddPostAsyncStatus] = useState<Status>('idle');
+
   const canSave = useMemo(
-    () => [title, body, userId].every(Boolean) && addPostAsyncStatus === 'idle',
-    [body, title, userId, addPostAsyncStatus]
+    () => [title, body, userId].every(Boolean) && !isLoading,
+    [title, body, userId, isLoading]
   );
 
-  const onSavePostClicked = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      if (canSave) {
-        try {
-          setAddPostAsyncStatus('pending');
-          dispatch(
-            addPostAsync({
-              title,
-              body,
-              userId,
-            })
-          ).unwrap();
-          setTitle('');
-          setBody('');
-          setUserId('');
-          router.push('/post');
-        } catch (err) {
-          console.error('Error adding post', err);
-        } finally {
-          setAddPostAsyncStatus('idle');
+  const onSavePostClicked = useCallback(async () => {
+    if (canSave) {
+      try {
+        // add invalidateTags later on
+        await addNewPost({ userId: +userId, title, body }).unwrap();
+        setTitle('');
+        setBody('');
+        setUserId('');
+      } catch {
+        if (error) {
+          if ('status' in error) {
+            // you can access all properties of `FetchBaseQueryError` here
+            const errMsg =
+              'error' in error ? error.error : JSON.stringify(error.data);
+            return (
+              <div>
+                <div>An error has occurred:</div>
+                <div>{errMsg}</div>
+              </div>
+            );
+          } else {
+            // you can access all properties of `SerializedError` here
+            return <div>{error.message}</div>;
+          }
         }
       }
-    },
-    [body, canSave, dispatch, router, title, userId]
-  );
+    }
+  }, [addNewPost, body, canSave, error, title, userId]);
+
   const usersOptions = users.map((user) => (
     <option key={user.id} value={user.id}>
       {user.name}

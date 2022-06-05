@@ -10,28 +10,28 @@ import TimeAgo from '@/components/TimeAgo';
 
 import { AppState } from '@/store';
 import {
-  getPostsAsync,
   selectPostById,
-  selectPostStatus,
-} from '@/store/features/post/post.slice';
+  useGetPostsQuery,
+} from '@/store/features/post/post.api';
 import { getUsersAsync } from '@/store/features/user/user.slice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 const PostDetailPage: NextPage = (): JSX.Element => {
+  const { isLoading } = useGetPostsQuery();
   const router = useRouter();
   const { postId } = router.query as { postId: string };
-  const post = useAppSelector((state) => selectPostById(state, postId));
+  console.log('🚀 ~ file: [postId].tsx ~ line 19 ~ postId', typeof postId);
+  const post = useAppSelector((state) => selectPostById(state, +postId));
+  console.log('🚀 ~ file: [postId].tsx ~ line 20 ~ post', post);
   const dispatch = useAppDispatch();
-  const postStatus = useAppSelector(selectPostStatus);
-  useEffect(() => {
-    if (postStatus === 'idle') {
-      dispatch(getPostsAsync());
-    }
-  }, [dispatch, postStatus]);
 
   useEffect(() => {
     dispatch(getUsersAsync());
   }, [dispatch]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   if (!post) {
     return (

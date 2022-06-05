@@ -6,7 +6,7 @@ import PostAuthor from '@/components/PostAuthor';
 import ReactionButtons from '@/components/ReactionButtons';
 import TimeAgo from '@/components/TimeAgo';
 
-import { selectPostById } from '@/store/features/post/post.slice';
+import { selectPostById } from '@/store/features/post/post.api';
 import { useAppSelector } from '@/store/hooks';
 
 type PostExcerptProps = { postId: EntityId };

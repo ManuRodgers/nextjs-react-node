@@ -1,7 +1,6 @@
 import React, { FC, memo, useCallback } from 'react';
 
-import { Post, reactionAdded } from '@/store/features/post/post.slice';
-import { useAppDispatch } from '@/store/hooks';
+import { Post, useAddReactionsMutation } from '@/store/features/post/post.api';
 
 type ReactionButtonsProps = { post: Post };
 const reactionEmoji: { [P in keyof Post['reactions']]: string } = {
@@ -12,7 +11,7 @@ const reactionEmoji: { [P in keyof Post['reactions']]: string } = {
   coffee: '☕',
 };
 const ReactionButtons: FC<ReactionButtonsProps> = ({ post }): JSX.Element => {
-  const dispatch = useAppDispatch();
+  const [addReaction] = useAddReactionsMutation();
   const renderReactionButtons = useCallback(() => {
     return Object.entries(reactionEmoji).map(([name, emoji]) => {
       return (
@@ -20,19 +19,19 @@ const ReactionButtons: FC<ReactionButtonsProps> = ({ post }): JSX.Element => {
           key={name + '-' + emoji}
           type='button'
           onClick={() => {
-            dispatch(
-              reactionAdded({
-                postId: post.id,
-                reaction: name as keyof Post['reactions'],
-              })
-            );
+            const newValue =
+              post.reactions[name as keyof Post['reactions']] + 1;
+            addReaction({
+              postId: post.id,
+              reactions: { ...post.reactions, [name]: newValue },
+            });
           }}
         >
           {emoji} {post.reactions[name as keyof Post['reactions']]}
         </button>
       );
     });
-  }, [dispatch, post.id, post.reactions]);
+  }, [addReaction, post.id, post.reactions]);
   return <div>{renderReactionButtons()}</div>;
 };
 export default memo(ReactionButtons);

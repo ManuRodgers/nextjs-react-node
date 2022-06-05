@@ -8,7 +8,6 @@ import 'react-phone-number-input/style.css';
 import Layout from '@/components/Layout';
 
 import { wrapper } from '@/store';
-
 class MyApp extends App<AppInitialProps> {
   public static getInitialProps = wrapper.getInitialAppProps(
     () => async (context) => {
